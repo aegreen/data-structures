@@ -5,33 +5,36 @@ var HashTable = function(){
 
 HashTable.prototype.insert = function(k, v){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage[i];
-  if (bucket) {
-    for (var j = 0; j < bucket.length; j++) {
-      if (bucket[j][0] === k) {
-        bucket[j][1] = v;
+  if (this._storage[i]) {
+    for (var j = 0; j < this._storage[i].length; j++) {
+      if (this._storage[i][j][0] === k) {
+        this._storage[i][j][1] = v;
       }
     }
-    bucket.push([k, v]);
+    this._storage[i].push([k, v]);
   } else {
-    bucket = [];
-    bucket.push([k, v]);
+    this._storage[i] = [];
+    this._storage[i].push([k, v]);
   }
 };
 
 HashTable.prototype.retrieve = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage[i];
-  for (var l = 0; l < bucket.length; l++) {
-  	if (bucket[l][0] === k) {
-  		return bucket[l][1];
+  for (var l = 0; l < this._storage[i].length; l++) {
+  	if (this._storage[i][l][0] === k) {
+  		return this._storage[i][l][1];
   	}
   }
   return null;
 };
 
 HashTable.prototype.remove = function(k){
-
+  var i = getIndexBelowMaxForKey(k, this._limit);
+  for (var l = 0; l < this._storage[i].length; l++) {
+    if (this._storage[i][l][0] === k) {
+      this._storage[i][l][1] = null;
+    }
+  }
 };
 
 
